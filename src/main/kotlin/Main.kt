@@ -1,12 +1,11 @@
 import java.util.Scanner
 
 fun main(args: Array<String>) {
-    val scanner = Scanner(System.`in`)
 
     while (true) {
-        println("Введите инф-цию, когда пользователь был в последний раз (в секундах):")
+        println("\nВведите инф-цию, когда пользователь был в последний раз (в секундах):")
         println("Для окончания - введите 0")
-        var lastTimeVisitInSec = scanner.nextInt()
+        val lastTimeVisitInSec = readln().toInt()
         when {
             (lastTimeVisitInSec > 0) -> ageToText(lastTimeVisitInSec)
             lastTimeVisitInSec == 0 -> {
@@ -19,12 +18,13 @@ fun main(args: Array<String>) {
 
 fun ageToText(lastTimeVisitInSec: Int) {
     val sec = 60
-    var minutes = lastTimeVisitInSec / sec
-    var hours = lastTimeVisitInSec / minutes
+    val min = 3600
+    val minutes = lastTimeVisitInSec / sec
+    val hours = lastTimeVisitInSec / 3600
     when (lastTimeVisitInSec){
         in 0..60 -> println("Пользователь был(а) только что")
         in 61..3600 -> println("Пользователь был(а) $minutes ${minuteCase(lastTimeVisitInSec)} назад")
-        in (60 * 60)..(24 * 60 * 60) -> println("Пользователь был(а) $hours ${hourCase(lastTimeVisitInSec)} назад")
+        in (60 * 60)..(24 * 60 * 60) -> println("Пользователь был(а) $hours ${hourCase(hours)} назад")
         in (24 * 60 * 60 + 1)..(48 * 60 * 60) -> println("Пользователь был(а) вчера")
         in (48 * 60 * 60 +1)..(72 * 60 * 60) -> println("Пользователь был(а) позавчера")
         else -> println("Пользователь был(а) давно")
@@ -42,13 +42,12 @@ fun minuteCase(lastTimeVisitInSec: Int): String {
     }
 }
 
-fun hourCase(lastTimeVisitInSec: Int): String {
-    var hours = lastTimeVisitInSec * 60 * 60
+fun hourCase(hours: Int): String {
     return when {
         hours == 1 -> "час "
         hours in 2..4 -> "часа "
         hours in 5..20 -> "часов "
-        hours % 10 == 1 -> "час "
+        hours % 10 == 1 && hours != 11-> "час "
         hours % 10 in 2..4 -> "часа "
         else -> "часов "
     }
